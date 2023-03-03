@@ -214,10 +214,39 @@ class NuScenesDataset(Custom3DDataset):
         """
         data = mmcv.load(ann_file)
         data_infos = list(sorted(data['infos'], key=lambda e: e['timestamp']))
+        self._abs_path(data_infos)
         data_infos = data_infos[::self.load_interval]
         self.metadata = data['metadata']
         self.version = self.metadata['version']
         return data_infos
+
+    def _abs_path(self,data_infos):
+        def rep_path(path):
+            return osp.join(self.data_root,path)
+        for info in data_infos:
+            lidar_path = info['lidar_path']
+            info['lidar_path'] = rep_path(lidar_path)
+            sweeps = info['sweeps']
+            for sw in sweeps:
+                data_path = sw['data_path']
+                sw['data_path'] = rep_path(data_path)
+            cams = info['cams']
+            for key in cams.keys():
+                cams[key]['data_path'] = rep_path(cams[key]['data_path'])
+
+            next = info.get('next', [])
+            next = [] if next is None else next
+            for n in next:
+                cams = n['cams']
+                for key in cams.keys():
+                    cams[key]['data_path'] = rep_path(cams[key]['data_path'])
+
+            prev = info.get('prev', [])
+            prev = prev if prev else []
+            for p in prev:
+                cams = p['cams']
+                for key in cams.keys():
+                    cams[key]['data_path'] = rep_path(cams[key]['data_path'])
 
     def get_data_info(self, index):
         """Get data info according to the given index.
