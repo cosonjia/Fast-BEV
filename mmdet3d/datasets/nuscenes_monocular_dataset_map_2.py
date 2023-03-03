@@ -26,7 +26,7 @@ class NuScenesMultiView_Map_Dataset2(NuScenesMultiViewDataset):
 
         self.nusc = NuScenes(version='v1.0-trainval', dataroot=self.data_root, verbose=True)
         self.scene2map = get_scene2map(self.nusc)
-        self.maps = get_nusc_maps()
+        self.maps = get_nusc_maps(self.data_root)
         # box 2d
         self.with_box2d = with_box2d
 
@@ -342,9 +342,9 @@ def convert_points_to_local(points, pose):
     return points
 
 
-def get_nusc_maps(map_folder='./data/nuscenes'):
+def get_nusc_maps(map_root):
     nusc_maps = {
-        map_name: NuScenesMap(dataroot=map_folder, map_name=map_name) for map_name in
+        map_name: NuScenesMap(dataroot=map_root, map_name=map_name) for map_name in
         [
             "singapore-hollandvillage",
             "singapore-queenstown",
