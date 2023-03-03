@@ -113,7 +113,7 @@ class_names = [
     'motorcycle', 'pedestrian', 'traffic_cone', 'barrier'
 ]
 dataset_type = 'NuScenesMultiView_Map_Dataset2'
-data_root = './data/nuscenes/'
+data_root = '/mnt/datasets/nuScenes/fastbev/clound/'
 # Input modality for nuScenes dataset, this is consistent with the submission
 # format which requires the information in input_modality.
 input_modality = dict(
@@ -143,11 +143,11 @@ data_config = {
     'pad_color': (0, 0, 0),
 }
 
-# file_client_args = dict(backend='disk')
-file_client_args = dict(
-    backend='petrel',
-    path_mapping=dict({
-        data_root: 'public-1424:s3://openmmlab/datasets/detection3d/nuscenes/'}))
+file_client_args = dict(backend='disk')
+# file_client_args = dict(
+#     backend='petrel',
+#     path_mapping=dict({
+#         data_root: 'public-1424:s3://openmmlab/datasets/detection3d/nuscenes/'}))
 
 train_pipeline = [
     dict(type='MultiViewPipeline', sequential=True, n_images=6, n_times=4, transforms=[
@@ -193,7 +193,7 @@ test_pipeline = [
     dict(
         type='LoadPointsFromFile',
         dummy=True,
-        coord_type='LIDAR',
+        coord_type='CAMERA',
         load_dim=5,
         use_dim=5),
     dict(type='RandomAugImageMultiViewImage', data_config=data_config, is_train=False),
@@ -262,8 +262,8 @@ data = dict(
         modality=input_modality,
         test_mode=True,
         with_box2d=True,
-        box_type_3d='LiDAR',
-        ann_file='data/nuscenes/nuscenes_infos_val_4d_interval3_max60.pkl',
+        box_type_3d='CAMERA',
+        ann_file='/mnt/datasets/nuScenes/fastbev/clound/nuscenes_infos_val_4d_interval3_max60_rp.pkl',
         load_interval=1,
         sequential=True,
         n_times=4,
