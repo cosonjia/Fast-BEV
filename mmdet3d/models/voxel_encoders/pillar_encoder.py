@@ -9,7 +9,7 @@ from ..builder import VOXEL_ENCODERS
 from .utils import PFNLayer, get_paddings_indicator
 
 
-@VOXEL_ENCODERS.register_module()
+@VOXEL_ENCODERS.register_module(force=True)
 class PillarFeatureNet(nn.Module):
     """Pillar Feature Net.
 
