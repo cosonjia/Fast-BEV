@@ -15,7 +15,7 @@ import copy
 import ipdb  # noqa
 
 
-@DETECTORS.register_module()
+@DETECTORS.register_module(force=True)
 class M2BevNet(BaseDetector):
     def __init__(
         self,

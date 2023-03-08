@@ -14,7 +14,7 @@ from mmdet.models import HEADS
 from .base_conv_bbox_head import BaseConvBboxHead
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class VoteHead(BaseModule):
     r"""Bbox head of `Votenet <https://arxiv.org/abs/1904.09664>`_.
 

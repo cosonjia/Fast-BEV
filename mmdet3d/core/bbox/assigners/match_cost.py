@@ -7,7 +7,7 @@ from mmdet.core.bbox.match_costs.builder import MATCH_COST
 from mmdet3d.core.bbox.iou_calculators import axis_aligned_bbox_overlaps_3d
 
 
-@MATCH_COST.register_module()
+@MATCH_COST.register_module(force=True)
 class L1Cost:
     def __init__(self, weight=1.):
         self.weight = weight
@@ -17,7 +17,7 @@ class L1Cost:
         return dir_cost * self.weight
 
     
-@MATCH_COST.register_module()
+@MATCH_COST.register_module(force=True)
 class CrossEntropyCost:
     def __init__(self, weight=1.):
         self.weight = weight
@@ -27,7 +27,7 @@ class CrossEntropyCost:
         return dir_cost * self.weight
 
     
-@MATCH_COST.register_module()
+@MATCH_COST.register_module(force=True)
 class IoU3DCost:
     def __init__(self, iou_mode='giou', weight=1.):
         self.weight = weight

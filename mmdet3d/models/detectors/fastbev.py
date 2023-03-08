@@ -16,7 +16,7 @@ from mmcv.runner import get_dist_info, auto_fp16
 import copy
 
 
-@DETECTORS.register_module()
+@DETECTORS.register_module(force=True)
 class FastBEV(BaseDetector):
     def __init__(
         self,
@@ -349,7 +349,7 @@ class FastBEV(BaseDetector):
 
     def forward_test(self, img, img_metas, **kwargs):
         if not self.test_cfg.get('use_tta', False):
-            return self.simple_test(img, img_metas)
+            return self.simple_test(img, img_metas,**kwargs)
         return self.aug_test(img, img_metas)
 
     def onnx_export_2d(self, img, img_metas):
@@ -406,12 +406,12 @@ class FastBEV(BaseDetector):
 
         return x
 
-    def simple_test(self, img, img_metas):
+    def simple_test(self, img, img_metas,**kwargs):
         bbox_results = []
         feature_bev, _, features_2d = self.extract_feat(img, img_metas, "test")
         if self.bbox_head is not None:
             x = self.bbox_head(feature_bev)
-            bbox_list = self.bbox_head.get_bboxes(*x, img_metas, valid=None)
+            bbox_list = self.bbox_head.get_bboxes(*x, img_metas, valid=None,**kwargs)
             bbox_results = [
                 bbox3d2result(det_bboxes, det_scores, det_labels)
                 for det_bboxes, det_scores, det_labels in bbox_list

@@ -5,7 +5,7 @@ from ..builder import build_head
 from .base_3droi_head import Base3DRoIHead
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class H3DRoIHead(Base3DRoIHead):
     """H3D roi head for H3DNet.
 

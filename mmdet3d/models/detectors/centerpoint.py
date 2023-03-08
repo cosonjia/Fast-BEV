@@ -6,7 +6,7 @@ from mmdet.models import DETECTORS
 from .mvx_two_stage import MVXTwoStageDetector
 from IPython import embed
 
-@DETECTORS.register_module()
+@DETECTORS.register_module(force=True)
 class CenterPoint(MVXTwoStageDetector):
     """Base class of Multi-modality VoxelNet."""
 

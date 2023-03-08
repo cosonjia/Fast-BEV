@@ -7,7 +7,7 @@ from torch import nn as nn
 from mmdet.models.builder import HEADS
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class BaseConvBboxHead(BaseModule):
     r"""More general bbox head, with shared conv layers and two optional
     separated branches.

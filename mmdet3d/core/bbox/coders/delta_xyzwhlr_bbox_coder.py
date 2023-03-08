@@ -7,7 +7,7 @@ from mmdet.core.bbox.builder import BBOX_CODERS
 import ipdb
 
 
-@BBOX_CODERS.register_module()
+@BBOX_CODERS.register_module(force=True)
 class DeltaXYZWLHRBBoxCoder(BaseBBoxCoder):
     """Bbox Coder for 3D boxes.
 

@@ -15,7 +15,7 @@ from mmcv.cnn import ConvModule
 import ipdb
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class Anchor3DHead(BaseModule, AnchorTrainMixin):
     """Anchor head for SECOND/PointPillars/MVXNet/PartA2.
 

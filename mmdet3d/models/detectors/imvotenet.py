@@ -52,7 +52,7 @@ def sample_valid_seeds(mask, num_sampled_seed=1024):
     return sample_inds
 
 
-@DETECTORS.register_module()
+@DETECTORS.register_module(force=True)
 class ImVoteNet(Base3DDetector):
     r"""`ImVoteNet <https://arxiv.org/abs/2001.10692>`_ for 3D detection."""
 

@@ -10,7 +10,7 @@ from ..builder import VOXEL_ENCODERS
 from .utils import VFELayer, get_paddings_indicator
 
 
-@VOXEL_ENCODERS.register_module()
+@VOXEL_ENCODERS.register_module(force=True)
 class HardSimpleVFE(nn.Module):
     """Simple voxel feature encoder used in SECOND.
 
@@ -45,7 +45,7 @@ class HardSimpleVFE(nn.Module):
         return points_mean.contiguous()
 
 
-@VOXEL_ENCODERS.register_module()
+@VOXEL_ENCODERS.register_module(force=True)
 class DynamicSimpleVFE(nn.Module):
     """Simple dynamic voxel feature encoder used in DV-SECOND.
 
@@ -84,7 +84,7 @@ class DynamicSimpleVFE(nn.Module):
         return features, features_coors
 
 
-@VOXEL_ENCODERS.register_module()
+@VOXEL_ENCODERS.register_module(force=True)
 class DynamicVFE(nn.Module):
     """Dynamic Voxel feature encoder used in DV-SECOND.
 
@@ -284,7 +284,7 @@ class DynamicVFE(nn.Module):
         return voxel_feats, voxel_coors
 
 
-@VOXEL_ENCODERS.register_module()
+@VOXEL_ENCODERS.register_module(force=True)
 class HardVFE(nn.Module):
     """Voxel feature encoder used in DV-SECOND.
 

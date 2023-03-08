@@ -14,7 +14,7 @@ from mmdet.core import build_bbox_coder, multi_apply
 from mmdet.models import HEADS
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class H3DBboxHead(BaseModule):
     r"""Bbox head of `H3DNet <https://arxiv.org/abs/2006.05682>`_.
 

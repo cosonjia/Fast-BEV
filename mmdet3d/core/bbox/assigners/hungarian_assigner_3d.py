@@ -19,7 +19,7 @@ except ImportError:
 from IPython import embed
 import random
 
-@BBOX_ASSIGNERS.register_module()
+@BBOX_ASSIGNERS.register_module(force=True)
 class HungarianAssigner3D(BaseAssigner):
     def __init__(self,
                  cls_cost=dict(type='ClassificationCost', weight=1.0),
@@ -132,7 +132,7 @@ class HungarianAssigner3D(BaseAssigner):
         return assign_res
     
     
-@BBOX_ASSIGNERS.register_module()
+@BBOX_ASSIGNERS.register_module(force=True)
 class HungarianAssigner3D_v1(BaseAssigner):
     def __init__(self,
                  cls_cost=dict(type='ClassificationCost', weight=1.0),

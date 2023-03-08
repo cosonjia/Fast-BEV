@@ -6,7 +6,7 @@ import mmcv
 from IPython import embed
 
 
-@DETECTORS.register_module()
+@DETECTORS.register_module(force=True)
 class ImVoxelNet(BaseDetector):
     def __init__(self,
                  backbone,

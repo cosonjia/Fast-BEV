@@ -13,7 +13,7 @@ from IPython import embed
 import ipdb
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class LoadMultiViewImageFromFiles(object):
     """Load multi channel images from a list of separate channel files.
 
@@ -77,7 +77,7 @@ class LoadMultiViewImageFromFiles(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class LoadMultiViewImageFromFilesV2(object):
     """Load multi channel images from a list of separate channel files.
 
@@ -155,7 +155,7 @@ class LoadMultiViewImageFromFilesV2(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class LoadMultiViewImageFromFiles_BEVDet(object):
     """Load multi channel images from a list of separate channel files.
 
@@ -414,7 +414,7 @@ class LoadMultiViewImageFromFiles_BEVDet(object):
         return results
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class LoadImageFromFileMono3D(LoadImageFromFile):
     """Load an image from file in monocular 3D object detection. Compared to 2D
     detection, additional camera parameters need to be loaded.
@@ -438,7 +438,7 @@ class LoadImageFromFileMono3D(LoadImageFromFile):
         return results
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class LoadPointsFromMultiSweeps(object):
     """Load points from multiple sweeps.
 
@@ -577,7 +577,7 @@ class LoadPointsFromMultiSweeps(object):
         return f'{self.__class__.__name__}(sweeps_num={self.sweeps_num})'
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class PointSegClassMapping(object):
     """Map original semantic class to valid category ids.
 
@@ -632,7 +632,7 @@ class PointSegClassMapping(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class NormalizePointsColor(object):
     """Normalize color of points.
 
@@ -673,7 +673,7 @@ class NormalizePointsColor(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class LoadPointsFromFile(object):
     """Load Points From File.
 
@@ -806,7 +806,7 @@ class LoadPointsFromFile(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class LoadAnnotations3D(LoadAnnotations):
     """Load Annotations3D.
 

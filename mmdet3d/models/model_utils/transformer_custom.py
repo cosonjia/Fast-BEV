@@ -393,7 +393,7 @@ def inverse_sigmoid(x, eps=1e-5):
 
 
 
-@TRANSFORMER.register_module()
+@TRANSFORMER.register_module(force=True)
 class DeformableDetrTransformer_Custom(Transformer):
     """Implements the DeformableDETR transformer.
     Args:

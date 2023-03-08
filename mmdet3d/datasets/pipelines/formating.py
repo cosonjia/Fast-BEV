@@ -12,7 +12,7 @@ import ipdb
 PIPELINES._module_dict.pop('DefaultFormatBundle')
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class DefaultFormatBundle(object):
     """Default formatting bundle.
 

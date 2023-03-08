@@ -10,7 +10,7 @@ from mmseg.core import build_pixel_sampler
 from mmseg.models.losses import accuracy
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class BEV_FCNHead(BEV_BaseDecodeHead):
     """Fully Convolution Networks for Semantic Segmentation.
     This head is implemented of `FCNNet <https://arxiv.org/abs/1411.4038>`_.

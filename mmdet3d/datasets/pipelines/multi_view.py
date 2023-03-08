@@ -5,7 +5,7 @@ from mmdet.datasets.pipelines import Compose, RandomFlip, LoadImageFromFile
 import ipdb
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class MultiViewPipeline:
     def __init__(self, transforms, n_images, n_times=2, sequential=False):
         self.transforms = Compose(transforms)
@@ -55,7 +55,7 @@ class MultiViewPipeline:
         return results
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class RandomShiftOrigin:
     def __init__(self, std):
         self.std = std
@@ -66,7 +66,7 @@ class RandomShiftOrigin:
         return results
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class KittiSetOrigin:
     def __init__(self, point_cloud_range):
         point_cloud_range = np.array(point_cloud_range, dtype=np.float32)
@@ -77,7 +77,7 @@ class KittiSetOrigin:
         return results
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class KittiRandomFlip:
     def __call__(self, results):
         if results['flip']:
@@ -102,7 +102,7 @@ class KittiRandomFlip:
         return results
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class SunRgbdSetOrigin:
     def __call__(self, results):
         intrinsic = results['lidar2img']['intrinsic'][:3, :3]
@@ -116,7 +116,7 @@ class SunRgbdSetOrigin:
         return results
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class SunRgbdTotalLoadImageFromFile(LoadImageFromFile):
     def __call__(self, results):
         file_name = results['img_info']['filename']
@@ -129,7 +129,7 @@ class SunRgbdTotalLoadImageFromFile(LoadImageFromFile):
         return results
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class SunRgbdRandomFlip:
     def __call__(self, results):
         if results['flip']:

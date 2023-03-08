@@ -5,7 +5,7 @@ from mmdet.models import HEADS
 from .pointnet2_head import PointNet2Head
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class PAConvHead(PointNet2Head):
     r"""PAConv decoder head.
 

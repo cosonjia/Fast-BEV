@@ -11,7 +11,7 @@ from mmdet.models import HEADS
 from .anchor3d_head import Anchor3DHead
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class PartA2RPNHead(Anchor3DHead):
     """RPN head for PartA2.
 

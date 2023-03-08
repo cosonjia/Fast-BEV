@@ -7,7 +7,7 @@ from mmdet.models import HEADS
 from .decode_head import Base3DDecodeHead
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class PointNet2Head(Base3DDecodeHead):
     r"""PointNet2 decoder head.
 

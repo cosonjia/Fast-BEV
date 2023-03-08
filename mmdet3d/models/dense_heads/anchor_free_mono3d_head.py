@@ -10,7 +10,7 @@ from mmdet.models.builder import HEADS, build_loss
 from .base_mono3d_dense_head import BaseMono3DDenseHead
 from IPython import embed
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class AnchorFreeMono3DHead(BaseMono3DDenseHead):
     """Anchor-free head for monocular 3D object detection.
 

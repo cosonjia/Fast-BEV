@@ -14,7 +14,7 @@ from mmdet3d.ops.iou3d.iou3d_utils import nms_gpu
 from mmdet.core import build_bbox_coder, multi_apply
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class SeparateHead(BaseModule):
     """SeparateHead for CenterHead.
 
@@ -120,7 +120,7 @@ class SeparateHead(BaseModule):
         return ret_dict
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class DCNSeparateHead(BaseModule):
     r"""DCNSeparateHead for CenterHead.
 
@@ -238,7 +238,7 @@ class DCNSeparateHead(BaseModule):
         return ret
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class CenterHead(BaseModule):
     """CenterHead for CenterPoint.
 

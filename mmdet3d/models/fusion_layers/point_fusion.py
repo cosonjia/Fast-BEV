@@ -97,7 +97,7 @@ def point_sample(
     return point_features.squeeze().t()
 
 
-@FUSION_LAYERS.register_module()
+@FUSION_LAYERS.register_module(force=True)
 class PointFusion(BaseModule):
     """Fuse image features from multi-scale features.
 

@@ -10,7 +10,7 @@ from ..builder import build_head, build_roi_extractor
 from .base_3droi_head import Base3DRoIHead
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class PartAggregationROIHead(Base3DRoIHead):
     """Part aggregation roi head for PartA2.
 

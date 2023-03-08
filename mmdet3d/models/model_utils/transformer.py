@@ -4,7 +4,7 @@ from mmcv.cnn.bricks.transformer import POSITIONAL_ENCODING, MultiheadAttention
 from torch import nn as nn
 
 
-@ATTENTION.register_module()
+@ATTENTION.register_module(force=True)
 class GroupFree3DMHA(MultiheadAttention):
     """A warpper for torch.nn.MultiheadAttention for GroupFree3D.
 
@@ -107,7 +107,7 @@ class GroupFree3DMHA(MultiheadAttention):
             **kwargs)
 
 
-@POSITIONAL_ENCODING.register_module()
+@POSITIONAL_ENCODING.register_module(force=True)
 class ConvBNPositionalEncoding(nn.Module):
     """Absolute position embedding with Conv learning.
 

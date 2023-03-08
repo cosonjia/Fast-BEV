@@ -12,7 +12,7 @@ from mmdet.core import multi_apply
 from mmdet.models import HEADS
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class PrimitiveHead(BaseModule):
     r"""Primitive head of `H3DNet <https://arxiv.org/abs/2006.05682>`_.
 

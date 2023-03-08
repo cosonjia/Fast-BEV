@@ -13,7 +13,7 @@ from .anchor_free_mono3d_head import AnchorFreeMono3DHead
 INF = 1e8
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class FCOSMono3DHead(AnchorFreeMono3DHead):
     """Anchor-free head used in FCOS3D.
 

@@ -8,7 +8,7 @@ from .. import builder
 from .two_stage import TwoStage3DDetector
 
 
-@DETECTORS.register_module()
+@DETECTORS.register_module(force=True)
 class PartA2(TwoStage3DDetector):
     r"""Part-A2 detector.
 

@@ -6,7 +6,7 @@ from mmdet.models import DETECTORS
 from .single_stage import SingleStage3DDetector
 
 
-@DETECTORS.register_module()
+@DETECTORS.register_module(force=True)
 class VoteNet(SingleStage3DDetector):
     r"""`VoteNet <https://arxiv.org/pdf/1904.09664.pdf>`_ for 3D detection."""
 

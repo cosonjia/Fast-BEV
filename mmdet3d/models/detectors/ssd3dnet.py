@@ -3,7 +3,7 @@ from mmdet.models import DETECTORS
 from .votenet import VoteNet
 
 
-@DETECTORS.register_module()
+@DETECTORS.register_module(force=True)
 class SSD3DNet(VoteNet):
     """3DSSDNet model.
 

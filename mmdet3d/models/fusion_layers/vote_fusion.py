@@ -9,7 +9,7 @@ from . import apply_3d_transformation, bbox_2d_transform, coord_2d_transform
 EPS = 1e-6
 
 
-@FUSION_LAYERS.register_module()
+@FUSION_LAYERS.register_module(force=True)
 class VoteFusion(nn.Module):
     """Fuse 2d features from 3d seeds.
 

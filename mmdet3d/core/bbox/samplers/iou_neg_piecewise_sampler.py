@@ -5,7 +5,7 @@ from mmdet.core.bbox.builder import BBOX_SAMPLERS
 from . import RandomSampler, SamplingResult
 
 
-@BBOX_SAMPLERS.register_module()
+@BBOX_SAMPLERS.register_module(force=True)
 class IoUNegPiecewiseSampler(RandomSampler):
     """IoU Piece-wise Sampling.
 

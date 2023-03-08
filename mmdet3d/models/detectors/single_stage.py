@@ -3,7 +3,7 @@ from mmdet.models import DETECTORS, build_backbone, build_head, build_neck
 from .base import Base3DDetector
 
 
-@DETECTORS.register_module()
+@DETECTORS.register_module(force=True)
 class SingleStage3DDetector(Base3DDetector):
     """SingleStage3DDetector.
 

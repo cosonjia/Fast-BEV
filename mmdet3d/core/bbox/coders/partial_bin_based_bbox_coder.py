@@ -6,7 +6,7 @@ from mmdet.core.bbox import BaseBBoxCoder
 from mmdet.core.bbox.builder import BBOX_CODERS
 
 
-@BBOX_CODERS.register_module()
+@BBOX_CODERS.register_module(force=True)
 class PartialBinBasedBBoxCoder(BaseBBoxCoder):
     """Partial bin based bbox coder.
 

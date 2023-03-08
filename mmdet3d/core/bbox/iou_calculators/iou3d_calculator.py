@@ -13,7 +13,7 @@ def cast_tensor_type(x, scale=1.0, dtype=None):
     return x
 
 
-@IOU_CALCULATORS.register_module()
+@IOU_CALCULATORS.register_module(force=True)
 class BboxOverlapsNearest3D(object):
     """Nearest 3D IoU Calculator.
 
@@ -69,7 +69,7 @@ class BboxOverlapsNearest3D(object):
         return repr_str
 
 
-@IOU_CALCULATORS.register_module()
+@IOU_CALCULATORS.register_module(force=True)
 class BboxOverlaps3D(object):
     """3D IoU Calculator.
 
@@ -185,7 +185,7 @@ def bbox_overlaps_3d(bboxes1, bboxes2, mode='iou', coordinate='camera'):
     return bboxes1.overlaps(bboxes1, bboxes2, mode=mode)
 
 
-@IOU_CALCULATORS.register_module()
+@IOU_CALCULATORS.register_module(force=True)
 class AxisAlignedBboxOverlaps3D(object):
     """Axis-aligned 3D Overlaps (IoU) Calculator."""
 

@@ -105,7 +105,7 @@ class GeneralSamplingModule(nn.Module):
         return new_xyz, new_features, sample_inds
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class GroupFree3DHead(BaseModule):
     r"""Bbox head of `Group-Free 3D <https://arxiv.org/abs/2104.00678>`_.
 

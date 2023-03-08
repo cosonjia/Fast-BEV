@@ -6,7 +6,7 @@ from mmdet.core.bbox.builder import BBOX_CODERS
 from .partial_bin_based_bbox_coder import PartialBinBasedBBoxCoder
 
 
-@BBOX_CODERS.register_module()
+@BBOX_CODERS.register_module(force=True)
 class AnchorFreeBBoxCoder(PartialBinBasedBBoxCoder):
     """Anchor free bbox coder for 3D boxes.
 

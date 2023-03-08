@@ -77,7 +77,7 @@ class BatchSampler:
         return [self._sampled_list[i] for i in indices]
 
 
-@OBJECTSAMPLERS.register_module()
+@OBJECTSAMPLERS.register_module(force=True)
 class DataBaseSampler(object):
     """Class for sampling data from the ground truth database.
 

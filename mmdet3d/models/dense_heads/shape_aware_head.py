@@ -13,7 +13,7 @@ from ..builder import build_head
 from .anchor3d_head import Anchor3DHead
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class BaseShapeHead(BaseModule):
     """Base Shape-aware Head in Shape Signature Network.
 
@@ -162,7 +162,7 @@ class BaseShapeHead(BaseModule):
         return ret
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class ShapeAwareHead(Anchor3DHead):
     """Shape-aware grouping head for SSN.
 

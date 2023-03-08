@@ -10,7 +10,7 @@ from ..builder import build_backbone, build_head, build_loss, build_neck
 from .base import Base3DSegmentor
 
 
-@SEGMENTORS.register_module()
+@SEGMENTORS.register_module(force=True)
 class EncoderDecoder3D(Base3DSegmentor):
     """3D Encoder Decoder segmentors.
 

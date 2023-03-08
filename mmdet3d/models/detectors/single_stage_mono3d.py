@@ -11,7 +11,7 @@ from mmdet.models.builder import DETECTORS
 from mmdet.models.detectors.single_stage import SingleStageDetector
 from IPython import embed
 
-@DETECTORS.register_module()
+@DETECTORS.register_module(force=True)
 class SingleStageMono3DDetector(SingleStageDetector):
     """Base class for monocular 3D single-stage detectors.
 

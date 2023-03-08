@@ -10,7 +10,7 @@ from mmdet.core import multi_apply
 from mmdet.models import HEADS
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class PointwiseSemanticHead(BaseModule):
     """Semantic segmentation head for point-wise segmentation.
 

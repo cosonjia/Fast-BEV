@@ -25,7 +25,7 @@ from .data_augment_utils import noise_per_object_v3_
 import ipdb
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class RandomDropPointsColor(object):
     r"""Randomly set the color of points to all zeros.
 
@@ -75,7 +75,7 @@ class RandomDropPointsColor(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class RandomJitterPoints(object):
     """Randomly jitter point coordinates.
 
@@ -143,7 +143,7 @@ class RandomJitterPoints(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class ObjectSample(object):
     """Sample GT objects to the data.
 
@@ -247,7 +247,7 @@ class ObjectSample(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class ObjectNoise(object):
     """Apply noise to each GT objects in the scene.
 
@@ -312,7 +312,7 @@ class ObjectNoise(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class GlobalAlignment(object):
     """Apply global alignment to 3D scene points by rotation and translation.
 
@@ -399,7 +399,7 @@ class GlobalAlignment(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class PointShuffle(object):
     """Shuffle input points."""
 
@@ -431,7 +431,7 @@ class PointShuffle(object):
         return self.__class__.__name__
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class ObjectRangeFilter(object):
     """Filter objects by the range.
 
@@ -483,7 +483,7 @@ class ObjectRangeFilter(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class PointsRangeFilter(object):
     """Filter points by the range.
 
@@ -528,7 +528,7 @@ class PointsRangeFilter(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class ObjectNameFilter(object):
     """Filter GT objects by their names.
 
@@ -565,7 +565,7 @@ class ObjectNameFilter(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class PointSample(object):
     """Point sample.
 
@@ -680,7 +680,7 @@ class PointSample(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class IndoorPointSample(PointSample):
     """Indoor point sample.
 
@@ -697,7 +697,7 @@ class IndoorPointSample(PointSample):
         super(IndoorPointSample, self).__init__(*args, **kwargs)
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class IndoorPatchPointSample(object):
     r"""Indoor point sample within a patch. Modified from `PointNet++ <https://
     github.com/charlesq34/pointnet2/blob/master/scannet/scannet_dataset.py>`_.
@@ -941,7 +941,7 @@ class IndoorPatchPointSample(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class BackgroundPointsFilter(object):
     """Filter background points near the bounding box.
 
@@ -1006,7 +1006,7 @@ class BackgroundPointsFilter(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class VoxelBasedPointSampler(object):
     """Voxel based point sampler.
 
@@ -1147,7 +1147,7 @@ class VoxelBasedPointSampler(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class PhotoMetricDistortionMultiViewImage:
     """Apply photometric distortion to image sequentially, every transformation
     is applied with a probability of 0.5. The position of random contrast is in
@@ -1244,7 +1244,7 @@ class PhotoMetricDistortionMultiViewImage:
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class RandomScaleImageMultiViewImage(object):
     """Random scale the image
     Args:
@@ -1299,7 +1299,7 @@ class RandomScaleImageMultiViewImage(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class GlobalRotScaleTrans(object):
     """Apply global rotation, scaling and translation to a 3D scene.
 
@@ -1482,7 +1482,7 @@ class GlobalRotScaleTrans(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class InternalGlobalRotScaleTrans(GlobalRotScaleTrans):
     def update_transform(self, input_dict):
         # ipdb.set_trace()
@@ -1501,7 +1501,7 @@ class InternalGlobalRotScaleTrans(GlobalRotScaleTrans):
             cam_info['lidar2cam_rt'] = new_transform
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class RandomFlip3D(RandomFlip):
     """Flip the points & bbox.
 
@@ -1645,7 +1645,7 @@ class RandomFlip3D(RandomFlip):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class InternalRandomFlip3D(RandomFlip3D):
     def update_transform(self, input_dict):
         for cam_id, cam_info in enumerate(input_dict['lidar2img']['lidar2img_aug']):
@@ -1660,7 +1660,7 @@ class InternalRandomFlip3D(RandomFlip3D):
             cam_info['lidar2cam_rt'] = new_transform
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class RandomAugImageMultiViewImage(object):
     """Random scale the image
     Args:
@@ -1862,7 +1862,7 @@ class RandomAugImageMultiViewImage(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class TestTimeAugImageMultiViewImage(RandomAugImageMultiViewImage):
     def __init__(self, *args, **kwargs):
         super(TestTimeAugImageMultiViewImage, self).__init__(*args, **kwargs)
@@ -1887,7 +1887,7 @@ class TestTimeAugImageMultiViewImage(RandomAugImageMultiViewImage):
         return results
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class InternalRandomAugImageMultiViewImage(RandomAugImageMultiViewImage):
     def rts2proj(self, cam_info, post_rot=None, post_tran=None):
         if cam_info is None:
@@ -1910,7 +1910,7 @@ class InternalRandomAugImageMultiViewImage(RandomAugImageMultiViewImage):
         return lidar2img_rt.astype(np.float32)
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class InternalRandomAugImageMultiViewImageDebug(InternalRandomAugImageMultiViewImage):
     def __init__(self, repeat=10, *args, **kwargs):
         self.repeat = repeat
@@ -1925,7 +1925,7 @@ class InternalRandomAugImageMultiViewImageDebug(InternalRandomAugImageMultiViewI
         return results
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class NormalizeMultiviewImage(object):
     """Normalize the image.
     Added key is "img_norm_cfg".
@@ -1961,7 +1961,7 @@ class NormalizeMultiviewImage(object):
         return repr_str
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class PadMultiViewImage(object):
     """Pad the multi-view image.
     There are two padding modes: (1) pad to a fixed size and (2) pad to the

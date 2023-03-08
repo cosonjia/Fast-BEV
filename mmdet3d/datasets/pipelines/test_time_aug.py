@@ -9,7 +9,7 @@ from mmdet.datasets.pipelines import Compose
 import ipdb
 
 
-@PIPELINES.register_module()
+@PIPELINES.register_module(force=True)
 class MultiScaleFlipAug3D(object):
     """Test-time augmentation with multiple scales and flipping.
 

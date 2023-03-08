@@ -12,7 +12,7 @@ from .train_mixins import get_direction_target
 import ipdb
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class FreeAnchor3DHead(Anchor3DHead):
     r"""`FreeAnchor <https://arxiv.org/abs/1909.02466>`_ head for 3D detection.
 

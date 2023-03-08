@@ -15,7 +15,7 @@ from mmdet.core import build_bbox_coder, multi_apply
 from mmdet.models import HEADS
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class PartA2BboxHead(BaseModule):
     """PartA2 RoI head.
 

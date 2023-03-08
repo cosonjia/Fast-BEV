@@ -14,7 +14,7 @@ from mmdet.models import HEADS
 from .vote_head import VoteHead
 
 
-@HEADS.register_module()
+@HEADS.register_module(force=True)
 class SSD3DHead(VoteHead):
     r"""Bbox head of `3DSSD <https://arxiv.org/abs/2002.10187>`_.
 

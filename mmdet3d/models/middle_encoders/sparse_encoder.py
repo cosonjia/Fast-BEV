@@ -7,7 +7,7 @@ from mmdet3d.ops import spconv as spconv
 from ..builder import MIDDLE_ENCODERS
 
 
-@MIDDLE_ENCODERS.register_module()
+@MIDDLE_ENCODERS.register_module(force=True)
 class SparseEncoder(nn.Module):
     r"""Sparse encoder for SECOND and Part-A2.
 
