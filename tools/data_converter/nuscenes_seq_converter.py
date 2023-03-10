@@ -1,5 +1,5 @@
 # Copyright (c) Phigent Robotics. All rights reserved.
-
+import os.path
 import pickle
 from nuscenes import NuScenes
 import numpy as np
@@ -7,19 +7,26 @@ from pyquaternion import Quaternion
 import ipdb
 
 
-def add_adj_info():
+def add_adj_info(dataroot='./data/nuscenes/', version='v1.0-mini'):
     interval = 3
     max_adj = 60
     sample_num = None
-    for set in ['test', 'val', 'train', ]:
+    for set in ['test', 'val', 'train']:
         if set in ['val', 'train']:
+            pass
+            # continue
+        if 'v1.0-mini' == version and 'test' == set:
             continue
-        dataset = pickle.load(open('./data/nuscenes/nuscenes_infos_%s.pkl' % set, 'rb'))
-        if set in ['train', 'val']:
+        ann = 'nuscenes_infos_%s.pkl'
+        ann = os.path.join(dataroot, ann)
+        dataset = pickle.load(open(ann % set, 'rb'))
+        if 'v1.0-mini' == version:
+            nuscenes_version = 'v1.0-mini'
+        elif set in ['train', 'val']:
             nuscenes_version = 'v1.0-trainval'
         else:
             nuscenes_version = 'v1.0-test'
-        dataroot = './data/nuscenes/'
+
         nuscenes = NuScenes(nuscenes_version, dataroot)
         map_token_to_id = dict()
         for id in range(len(dataset['infos'])):
@@ -48,7 +55,7 @@ def add_adj_info():
                             break
                         sd_adj = nuscenes.get('sample_data', sample_data[adj])
                         sample_data = sd_adj
-                        adj_list[cam].append(dict(data_path='./data/nuscenes/' + sd_adj['filename'],
+                        adj_list[cam].append(dict(data_path=os.path.join(dataroot, sd_adj['filename']),
                                                   timestamp=sd_adj['timestamp'],
                                                   ego_pose_token=sd_adj['ego_pose_token']))
                         count += 1
@@ -103,7 +110,8 @@ def add_adj_info():
             if set in ['train', 'val']:
                 dataset['infos'][id]['gt_velocity'] = dataset['infos'][id]['gt_velocity'] - velocity_lidar.reshape(1, 2)
 
-        filename = './data/nuscenes/nuscenes_infos_%s_4d_interval%d_max%d.pkl' % (set, interval, max_adj)
+        filename = 'nuscenes_infos_%s_4d_interval%d_max%d.pkl' % (set, interval, max_adj)
+        filename = os.path.join(dataroot, filename)
         if sample_num is not None:
             filename = filename.replace('.pkl', f'_sample{sample_num}.pkl')
         with open(filename, 'wb') as fid:
@@ -111,4 +119,4 @@ def add_adj_info():
 
 
 if __name__ == '__main__':
-    add_adj_info()
+    add_adj_info(dataroot='/mnt/datasets/nuScenes/mini-v1')
