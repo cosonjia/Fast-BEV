@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import numpy as np
 import torch
 
@@ -65,7 +64,7 @@ class LiDARInstance3DBoxes(BaseInstance3DBoxes):
                              / |           /  |
                (x0, y0, z1) + ----------- +   + (x1, y1, z0)
                             |  /      .   |  /
-                            | / oriign    | /
+                            | / origin    | /
             left y<-------- + ----------- + (x0, y1, z0)
                 (x0, y0, z0)
         """
@@ -74,8 +73,8 @@ class LiDARInstance3DBoxes(BaseInstance3DBoxes):
         assert len(self.tensor) != 0
         dims = self.dims
         corners_norm = torch.from_numpy(
-            np.stack(np.unravel_index(np.arange(8), [2] * 3), axis=1)).to(
-                device=dims.device, dtype=dims.dtype)
+            np.stack(np.unravel_index(np.arange(8), [2] * 3), axis=1)
+        ).to(device=dims.device, dtype=dims.dtype)
 
         corners_norm = corners_norm[[0, 1, 3, 2, 4, 5, 7, 6]]
         # use relative origin [0.5, 0.5, 0]
@@ -105,9 +104,9 @@ class LiDARInstance3DBoxes(BaseInstance3DBoxes):
 
         # find the center of boxes
         conditions = (normed_rotations > np.pi / 4)[..., None]
-        bboxes_xywh = torch.where(conditions, bev_rotated_boxes[:,
-                                                                [0, 1, 3, 2]],
-                                  bev_rotated_boxes[:, :4])
+        bboxes_xywh = torch.where(
+            conditions, bev_rotated_boxes[:, [0, 1, 3, 2]], bev_rotated_boxes[:, :4]
+        )
 
         centers = bboxes_xywh[:, :2]
         dims = bboxes_xywh[:, 2:]
@@ -131,8 +130,9 @@ class LiDARInstance3DBoxes(BaseInstance3DBoxes):
         """
         if not isinstance(angle, torch.Tensor):
             angle = self.tensor.new_tensor(angle)
-        assert angle.shape == torch.Size([3, 3]) or angle.numel() == 1, \
-            f'invalid rotation angle shape {angle.shape}'
+        assert (
+            angle.shape == torch.Size([3, 3]) or angle.numel() == 1
+        ), f"invalid rotation angle shape {angle.shape}"
 
         if angle.numel() == 1:
             rot_sin = torch.sin(angle)
@@ -215,10 +215,12 @@ class LiDARInstance3DBoxes(BaseInstance3DBoxes):
         Returns:
             torch.Tensor: Whether each box is inside the reference range.
         """
-        in_range_flags = ((self.tensor[:, 0] > box_range[0])
-                          & (self.tensor[:, 1] > box_range[1])
-                          & (self.tensor[:, 0] < box_range[2])
-                          & (self.tensor[:, 1] < box_range[3]))
+        in_range_flags = (
+              (self.tensor[:, 0] > box_range[0])
+            & (self.tensor[:, 1] > box_range[1])
+            & (self.tensor[:, 0] < box_range[2])
+            & (self.tensor[:, 1] < box_range[3])
+        )
         return in_range_flags
 
     def convert_to(self, dst, rt_mat=None):
@@ -237,8 +239,8 @@ class LiDARInstance3DBoxes(BaseInstance3DBoxes):
                 The converted box of the same type in the ``dst`` mode.
         """
         from .box_3d_mode import Box3DMode
-        return Box3DMode.convert(
-            box=self, src=Box3DMode.LIDAR, dst=dst, rt_mat=rt_mat)
+
+        return Box3DMode.convert(box=self, src=Box3DMode.LIDAR, dst=dst, rt_mat=rt_mat)
 
     def enlarged_box(self, extra_width):
         """Enlarge the length, width and height boxes.
@@ -265,6 +267,7 @@ class LiDARInstance3DBoxes(BaseInstance3DBoxes):
             torch.Tensor: The index of box where each point are in.
         """
         box_idx = points_in_boxes_gpu(
-            points.unsqueeze(0),
-            self.tensor.unsqueeze(0).to(points.device)).squeeze(0)
+                                    points.unsqueeze(0),
+                                    self.tensor.unsqueeze(0).to(points.device)
+                        ).squeeze(0)
         return box_idx
