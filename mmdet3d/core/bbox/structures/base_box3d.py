@@ -1,4 +1,3 @@
-# Copyright (c) OpenMMLab. All rights reserved.
 import numpy as np
 import torch
 from abc import abstractmethod
@@ -43,8 +42,7 @@ class BaseInstance3DBoxes(object):
         if tensor.numel() == 0:
             # Use reshape, so we don't end up creating a new tensor that
             # does not depend on the inputs (and consequently confuses jit)
-            tensor = tensor.reshape((0, box_dim)).to(
-                dtype=torch.float32, device=device)
+            tensor = tensor.reshape((0, box_dim)).to(dtype=torch.float32, device=device)
         assert tensor.dim() == 2 and tensor.size(-1) == box_dim, tensor.size()
 
         if tensor.shape[-1] == 6:
@@ -173,12 +171,14 @@ class BaseInstance3DBoxes(object):
             torch.Tensor: A binary vector indicating whether each box is \
                 inside the reference range.
         """
-        in_range_flags = ((self.tensor[:, 0] > box_range[0])
-                          & (self.tensor[:, 1] > box_range[1])
-                          & (self.tensor[:, 2] > box_range[2])
-                          & (self.tensor[:, 0] < box_range[3])
-                          & (self.tensor[:, 1] < box_range[4])
-                          & (self.tensor[:, 2] < box_range[5]))
+        in_range_flags = (
+            (self.tensor[:, 0] > box_range[0])
+            & (self.tensor[:, 1] > box_range[1])
+            & (self.tensor[:, 2] > box_range[2])
+            & (self.tensor[:, 0] < box_range[3])
+            & (self.tensor[:, 1] < box_range[4])
+            & (self.tensor[:, 2] < box_range[5])
+        )
         return in_range_flags
 
     @abstractmethod
@@ -248,8 +248,7 @@ class BaseInstance3DBoxes(object):
         size_x = box[..., 3]
         size_y = box[..., 4]
         size_z = box[..., 5]
-        keep = ((size_x > threshold)
-                & (size_y > threshold) & (size_z > threshold))
+        keep = (size_x > threshold) & (size_y > threshold) & (size_z > threshold)
         return keep
 
     def __getitem__(self, item):
@@ -275,10 +274,10 @@ class BaseInstance3DBoxes(object):
             return original_type(
                 self.tensor[item].view(1, -1),
                 box_dim=self.box_dim,
-                with_yaw=self.with_yaw)
+                with_yaw=self.with_yaw,
+            )
         b = self.tensor[item]
-        assert b.dim() == 2, \
-            f'Indexing on Boxes with {item} failed to return a matrix!'
+        assert b.dim() == 2, f'Indexing on Boxes with {item} failed to return a matrix!'
         return original_type(b, box_dim=self.box_dim, with_yaw=self.with_yaw)
 
     def __len__(self):
@@ -309,7 +308,8 @@ class BaseInstance3DBoxes(object):
         cat_boxes = cls(
             torch.cat([b.tensor for b in boxes_list], dim=0),
             box_dim=boxes_list[0].tensor.shape[1],
-            with_yaw=boxes_list[0].with_yaw)
+            with_yaw=boxes_list[0].with_yaw,
+        )
         return cat_boxes
 
     def to(self, device):
@@ -370,8 +370,10 @@ class BaseInstance3DBoxes(object):
         """
         assert isinstance(boxes1, BaseInstance3DBoxes)
         assert isinstance(boxes2, BaseInstance3DBoxes)
-        assert type(boxes1) == type(boxes2), '"boxes1" and "boxes2" should' \
-            f'be in the same type, got {type(boxes1)} and {type(boxes2)}.'
+        assert type(boxes1) == type(boxes2), (
+            '"boxes1" and "boxes2" should'
+            f"be in the same type, got {type(boxes1)} and {type(boxes2)}."
+        )
 
         boxes1_top_height = boxes1.top_height.view(-1, 1)
         boxes1_bottom_height = boxes1.bottom_height.view(-1, 1)
@@ -402,8 +404,10 @@ class BaseInstance3DBoxes(object):
         """
         assert isinstance(boxes1, BaseInstance3DBoxes)
         assert isinstance(boxes2, BaseInstance3DBoxes)
-        assert type(boxes1) == type(boxes2), '"boxes1" and "boxes2" should' \
-            f'be in the same type, got {type(boxes1)} and {type(boxes2)}.'
+        assert type(boxes1) == type(boxes2), (
+            '"boxes1" and "boxes2" should'
+            f"be in the same type, got {type(boxes1)} and {type(boxes2)}."
+        )
 
         assert mode in ['iou', 'iof']
 
@@ -434,8 +438,7 @@ class BaseInstance3DBoxes(object):
 
         if mode == 'iou':
             # the clamp func is used to avoid division of 0
-            iou3d = overlaps_3d / torch.clamp(
-                volume1 + volume2 - overlaps_3d, min=1e-8)
+            iou3d = overlaps_3d / torch.clamp(volume1 + volume2 - overlaps_3d, min=1e-8)
         else:
             iou3d = overlaps_3d / torch.clamp(volume1, min=1e-8)
 
@@ -454,8 +457,10 @@ class BaseInstance3DBoxes(object):
             :obj:`BaseInstance3DBoxes`: A new bbox object with ``data``, \
                 the object's other properties are similar to ``self``.
         """
-        new_tensor = self.tensor.new_tensor(data) \
-            if not isinstance(data, torch.Tensor) else data.to(self.device)
+        new_tensor = (
+            self.tensor.new_tensor(data)
+            if not isinstance(data, torch.Tensor)
+            else data.to(self.device)
+        )
         original_type = type(self)
-        return original_type(
-            new_tensor, box_dim=self.box_dim, with_yaw=self.with_yaw)
+        return original_type(new_tensor, box_dim=self.box_dim, with_yaw=self.with_yaw)
