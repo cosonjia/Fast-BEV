@@ -53,7 +53,11 @@ def single_gpu_test(model,
                 return results
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
-
+        # data['img_metas'] = data['img_metas'].data
+        # data['img'] = data['img'].data
+        # result = [dict(img_bbox=result[0])]
+        # torch.save(dict(data=data, result=result), 'fastbev_res.pt')
+        # break
         if show:
             # Visualize the results of MMDetection3D model
             # 'show_results' is MMdetection3D visualization API
