@@ -491,6 +491,22 @@ class NuScenesDataset(Custom3DDataset):
                     bbox[:, 7:9] = bbox[:, 7:9] * time
                 input_dict['ann_info']['gt_bboxes_3d'] = LiDARInstance3DBoxes(
                     bbox, box_dim=bbox.shape[-1], origin=(0.5, 0.5, 0.0))
+        else:
+            annos = self.get_ann_info(index)
+            input_dict['ann_info'] = annos
+            if self.sequential:
+                bbox = input_dict['ann_info']['gt_bboxes_3d'].tensor
+                if 'abs' in self.speed_mode:
+                    bbox[:, 7:7 + 2] = bbox[:, 7:7 + 2] + torch.from_numpy(info['velo']).view(1, 2)
+                if 'dis' in self.speed_mode:
+                    assert self.test_time_id is not None
+                    adjacent_type = info['adjacent_type'][self.test_time_id - 1]
+                    if adjacent_type == 'next' and not self.fix_direction:
+                        bbox[:, 7:7 + 2] = -bbox[:, 7:7 + 2]
+                    time = abs(input_dict['timestamp'] - 1e-6 * info[adjacent_type][self.test_time_id - 1]['timestamp'])
+                    bbox[:, 7:9] = bbox[:, 7:9] * time
+                input_dict['ann_info']['gt_bboxes_3d'] = LiDARInstance3DBoxes(
+                    bbox, box_dim=bbox.shape[-1], origin=(0.5, 0.5, 0.0))
 
         return input_dict
 
