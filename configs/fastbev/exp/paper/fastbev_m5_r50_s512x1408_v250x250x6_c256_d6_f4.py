@@ -22,12 +22,12 @@ model = dict(
     neck_fuse=dict(in_channels=[256], out_channels=[64]),
     neck_3d=dict(
         type='M2BevNeck',
-        in_channels=64*6,
+        in_channels=64 * 6,
         out_channels=256,
         num_layers=6,
         stride=2,
         is_transpose=False,
-        fuse=dict(in_channels=64*6*4, out_channels=64*6),
+        fuse=dict(in_channels=64 * 6 * 4, out_channels=64 * 6),
         norm_cfg=dict(type='SyncBN', requires_grad=True)),
     seg_head=None,
     bbox_head=dict(
@@ -113,7 +113,7 @@ class_names = [
     'motorcycle', 'pedestrian', 'traffic_cone', 'barrier'
 ]
 dataset_type = 'NuScenesMultiView_Map_Dataset2'
-data_root = '/mnt/datasets/nuScenes/fastbev/clound/'
+data_root = '/mnt/datasets/nuScenes/mini/'
 # Input modality for nuScenes dataset, this is consistent with the submission
 # format which requires the information in input_modality.
 input_modality = dict(
@@ -190,18 +190,22 @@ test_pipeline = [
         dict(
             type='LoadImageFromFile',
             file_client_args=file_client_args)]),
+    dict(type='LoadAnnotations3D',
+         with_bbox=True,
+         with_label=True,
+         with_bev_seg=True),
     dict(
         type='LoadPointsFromFile',
-        dummy=True,
-        coord_type='CAMERA',
+        dummy=False,
+        coord_type='LIDAR',
         load_dim=5,
         use_dim=5),
-    dict(type='RandomAugImageMultiViewImage', data_config=data_config, is_train=False),
+    # dict(type='RandomAugImageMultiViewImage', data_config=data_config, is_train=False),
     # dict(type='TestTimeAugImageMultiViewImage', data_config=data_config, is_train=False),
     dict(type='KittiSetOrigin', point_cloud_range=point_cloud_range),
     dict(type='NormalizeMultiviewImage', **img_norm_cfg),
     dict(type='DefaultFormatBundle3D', class_names=class_names, with_label=False),
-    dict(type='Collect3D', keys=['img'])]
+    dict(type='Collect3D', keys=['img', 'points', 'gt_bboxes_3d', 'gt_labels_3d'])]
 
 data = dict(
     samples_per_gpu=1,
@@ -217,7 +221,7 @@ data = dict(
             test_mode=False,
             with_box2d=True,
             box_type_3d='LiDAR',
-            ann_file='data/nuscenes/nuscenes_infos_train_4d_interval3_max60.pkl',
+            ann_file=data_root + 'nuscenes_infos_train_4d_interval3_max60.pkl',
             load_interval=1,
             sequential=True,
             n_times=4,
@@ -241,7 +245,8 @@ data = dict(
         test_mode=True,
         with_box2d=True,
         box_type_3d='LiDAR',
-        ann_file='data/nuscenes/nuscenes_infos_val_4d_interval3_max60.pkl',
+        ann_file=data_root + 'nuscenes_infos_val_4d_interval3_max60.pkl',
+        version='v1.0-mini',
         load_interval=1,
         sequential=True,
         n_times=4,
@@ -262,8 +267,9 @@ data = dict(
         modality=input_modality,
         test_mode=True,
         with_box2d=True,
-        box_type_3d='CAMERA',
-        ann_file='/mnt/datasets/nuScenes/fastbev/clound/nuscenes_infos_val_4d_interval3_max60_rp.pkl',
+        box_type_3d='LiDAR',
+        version='v1.0-mini',
+        ann_file=data_root + 'nuscenes_infos_val_4d_interval3_max60.pkl',
         load_interval=1,
         sequential=True,
         n_times=4,
@@ -275,6 +281,7 @@ data = dict(
         test_adj='prev',
         test_adj_ids=[1, 3, 5],
         test_time_id=None,
+        verbose=False
     )
 )
 
