@@ -317,7 +317,7 @@ class NuScenesDataset(Custom3DDataset):
                 # @2 Lidar to Image Transform ["cam_intrinsic"].append(cam_intrinsic)
                 lidar2img_rt = viewpad @ lidar2cam_rt.T
                 lidar2img_rts.append(lidar2img_rt)
-                input_dict['lidar2image'].append(torch.from_numpy(lidar2img_rt))
+                input_dict['lidar2image'].append(lidar2img_rt)
                 # @3 Camera to ego Transform
                 from pyquaternion import Quaternion
                 camera2ego = np.eye(4).astype(np.float32)
@@ -328,7 +328,7 @@ class NuScenesDataset(Custom3DDataset):
                 camera2lidar = np.eye(4).astype(np.float32)
                 camera2lidar[:3, :3] = cam_info['sensor2lidar_rotation']
                 camera2lidar[:3, 3] = cam_info['sensor2lidar_translation']
-                input_dict['camera2lidar'].append(torch.from_numpy(camera2lidar))
+                input_dict['camera2lidar'].append(camera2lidar)
                 # keep original rts
                 lidar2img_extra = {kw: cam_info[kw] for kw in kws}
                 lidar2img_extras.append(lidar2img_extra)
