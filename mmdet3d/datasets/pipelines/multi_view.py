@@ -22,6 +22,7 @@ class MultiViewPipeline:
     def __call__(self, results):
         imgs = []
         extrinsics = []
+        results['filename'] = results['image_paths']
         if not self.sequential:
             assert len(results['img_info']) == 6
             ids = np.arange(len(results['img_info']))
