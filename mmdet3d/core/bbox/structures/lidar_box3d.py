@@ -165,6 +165,8 @@ class LiDARInstance3DBoxes(BaseInstance3DBoxes):
             else:
                 raise ValueError
             return points, rot_mat_T
+        else:
+            return rot_mat_T
 
     def flip(self, bev_direction='horizontal', points=None):
         """Flip the boxes in BEV along given BEV direction.
