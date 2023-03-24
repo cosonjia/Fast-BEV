@@ -119,4 +119,4 @@ def add_adj_info(dataroot='./data/nuscenes/', version='v1.0-mini'):
 
 
 if __name__ == '__main__':
-    add_adj_info(dataroot='/mnt/datasets/nuScenes/mini-v1')
+    add_adj_info(dataroot='/mnt/datasets/nuScenes/mini')
