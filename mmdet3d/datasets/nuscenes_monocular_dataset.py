@@ -31,8 +31,14 @@ class NuScenesMultiViewDataset(MultiViewMixin, NuScenesDataset):
             assert n_cameras == 6
 
         new_info = dict(
+            token=data_info["token"],
+            timestamp=data_info["timestamp"],
             sample_idx=data_info['sample_idx'],
             img_prefix=[None] * n_cameras,
+            image_paths=data_info['image_paths'],
+            lidar2image=data_info['lidar2image'],
+            pts_filename=data_info['pts_filename'],
+            # velocity=data_info['velocity'],
             img_info=[dict(filename=x) for x in data_info['img_filename']],
             lidar2img=dict(
                 extrinsic=[tofloat(x) for x in data_info['lidar2img']],
