@@ -270,12 +270,21 @@ class NuScenesDataset(Custom3DDataset):
         info = self.data_infos[index]
         # standard protocal modified from SECOND.Pytorch
         input_dict = dict(
+            token=info["token"],
             sample_idx=info['token'],
             pts_filename=info['lidar_path'],
             sweeps=info['sweeps'],
             timestamp=info['timestamp'] / 1e6,
+            velocity=info['velo']
         )
         if self.modality['use_camera']:
+            input_dict["image_paths"] = []
+            input_dict["lidar2camera"] = []
+            input_dict["lidar2image"] = []
+            input_dict['cam_intrinsic'] = []
+            input_dict['camera2ego'] = []
+            input_dict['camera2lidar'] = []
+            input_dict['camera2lidar'] = []
             image_paths = []
             lidar2img_rts = []
             lidar2img_augs = []
@@ -290,21 +299,39 @@ class NuScenesDataset(Custom3DDataset):
                 'cam_intrinsic'
             ]
             for cam_type, cam_info in info['cams'].items():
+                input_dict['image_paths'].append(cam_info['data_path'])
                 image_paths.append(cam_info['data_path'])
 
+                # @1 Lidar 2 Camera Transform
+                lidar2cam_r = np.linalg.inv(cam_info['sensor2lidar_rotation'])
+                lidar2cam_t = cam_info[
+                                  'sensor2lidar_translation'] @ lidar2cam_r.T
+                lidar2cam_rt = np.eye(4).astype(np.float32)
+                lidar2cam_rt[:3, :3] = lidar2cam_r.T
+                lidar2cam_rt[3, :3] = -lidar2cam_t
+                # Camera Intrinsics
+                # obtain lidar to image transformation matrix
+                cam_intrinsic = cam_info['cam_intrinsic']
+                viewpad = np.eye(4).astype(np.float32)
+                viewpad[:cam_intrinsic.shape[0], :cam_intrinsic.shape[1]] = cam_intrinsic
+                # @2 Lidar to Image Transform ["cam_intrinsic"].append(cam_intrinsic)
+                lidar2img_rt = viewpad @ lidar2cam_rt.T
+                lidar2img_rts.append(lidar2img_rt)
+                input_dict['lidar2image'].append(torch.from_numpy(lidar2img_rt))
+                # @3 Camera to ego Transform
+                from pyquaternion import Quaternion
+                camera2ego = np.eye(4).astype(np.float32)
+                camera2ego[:3, :3] = Quaternion(cam_info['sensor2ego_rotation']).rotation_matrix
+                camera2ego[:3, 3] = cam_info['sensor2ego_translation']
+                input_dict['camera2ego'].append(camera2ego)
+                # @4 Camera to Lidar Transform
+                camera2lidar = np.eye(4).astype(np.float32)
+                camera2lidar[:3, :3] = cam_info['sensor2lidar_rotation']
+                camera2lidar[:3, 3] = cam_info['sensor2lidar_translation']
+                input_dict['camera2lidar'].append(torch.from_numpy(camera2lidar))
                 # keep original rts
                 lidar2img_extra = {kw: cam_info[kw] for kw in kws}
                 lidar2img_extras.append(lidar2img_extra)
-
-                # obtain lidar to image transformation matrix
-                intrinsic = cam_info['cam_intrinsic']
-
-                lidar2cam_r = np.linalg.inv(cam_info['sensor2lidar_rotation'])
-                lidar2cam_t = cam_info[
-                    'sensor2lidar_translation'] @ lidar2cam_r.T
-                lidar2cam_rt = np.eye(4)
-                lidar2cam_rt[:3, :3] = lidar2cam_r.T
-                lidar2cam_rt[3, :3] = -lidar2cam_t
 
                 # keep aug rts
                 lidar2img_aug = {
@@ -315,12 +342,6 @@ class NuScenesDataset(Custom3DDataset):
                     'post_tran': np.zeros(3),
                 }
                 lidar2img_augs.append(lidar2img_aug)
-
-                viewpad = np.eye(4)
-                viewpad[:intrinsic.shape[0], :intrinsic.shape[1]] = intrinsic
-
-                lidar2img_rt = (viewpad @ lidar2cam_rt.T)
-                lidar2img_rts.append(lidar2img_rt)
 
             if self.sequential:
                 adjacent_type_list = []
@@ -404,7 +425,7 @@ class NuScenesDataset(Custom3DDataset):
                     ]
                     for cam_id, (cam_type, cam_info) in enumerate(info_adj['cams'].items()):
                         image_paths.append(cam_info['data_path'])
-
+                        # Lidar to Image Transform
                         lidar2img_aug = lidar2img_augs[cam_id].copy()
                         mat = np.eye(4, dtype=np.float32)
                         mat[:3, :3] = lidar2img_aug['rot']
@@ -413,7 +434,8 @@ class NuScenesDataset(Custom3DDataset):
                         lidar2img_aug['rot'] = mat[:3, :3]
                         lidar2img_aug['tran'] = mat[:3, 3]
                         lidar2cam_r = lidar2img_aug['lidar2cam_r'] = np.linalg.inv(lidar2img_aug['rot'])
-                        lidar2cam_t = lidar2img_aug['lidar2cam_t'] = lidar2img_aug['tran'] @ lidar2img_aug['lidar2cam_r'].T
+                        lidar2cam_t = lidar2img_aug['lidar2cam_t'] = lidar2img_aug['tran'] @ lidar2img_aug[
+                            'lidar2cam_r'].T
 
                         # keep aug rts
                         lidar2img_augs.append(lidar2img_aug)
