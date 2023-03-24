@@ -88,7 +88,8 @@ def plot_rect3d_on_img(img,
                 y_end = max(corners[end, 1], 0)
                 cv2.line(img, (x_start, y_start), (x_end, y_end), color, thickness,
                          cv2.LINE_AA)
-        except:
+        except Exception as e:
+            print(e)
             continue
 
     return img.astype(np.uint8)
