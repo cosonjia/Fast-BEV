@@ -103,6 +103,8 @@ class Custom3DDataset(Dataset):
         pts_filename = osp.join(self.data_root, info['pts_path'])
 
         input_dict = dict(
+            token=info["token"],
+            timestamp=info["timestamp"],
             pts_filename=pts_filename,
             sample_idx=sample_idx,
             file_name=pts_filename)
