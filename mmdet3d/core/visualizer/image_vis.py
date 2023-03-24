@@ -119,6 +119,7 @@ def draw_lidar_bbox3d_on_img(bboxes3d,
     pts_4d = np.concatenate(
         [corners_3d.reshape(-1, 3),
          np.ones((num_bbox * 8, 1))], axis=-1)
+    lidar2img_rt = lidar2img_rt['intrinsic']
     lidar2img_rt = copy.deepcopy(lidar2img_rt).reshape(4, 4)
     if isinstance(lidar2img_rt, torch.Tensor):
         lidar2img_rt = lidar2img_rt.cpu().numpy()
