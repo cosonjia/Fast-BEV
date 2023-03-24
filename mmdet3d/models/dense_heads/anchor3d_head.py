@@ -419,7 +419,7 @@ class Anchor3DHead(BaseModule, AnchorTrainMixin):
                    input_metas,
                    valid=None,
                    cfg=None,
-                   rescale=False):
+                   rescale=False, **kwargs):
         """Get bboxes of anchor head.
 
         Args:

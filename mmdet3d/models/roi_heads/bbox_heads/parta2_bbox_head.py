@@ -504,7 +504,7 @@ class PartA2BboxHead(BaseModule):
                    class_labels,
                    class_pred,
                    img_metas,
-                   cfg=None):
+                   cfg=None,**kwargs):
         """Generate bboxes from bbox head predictions.
 
         Args:

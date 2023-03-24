@@ -415,7 +415,7 @@ class AnchorFreeMono3DHead(BaseMono3DDenseHead):
                    attr_preds,
                    img_metas,
                    cfg=None,
-                   rescale=None):
+                   rescale=None,**kwargs):
         """Transform network output for a batch into bbox predictions.
 
         Args:
